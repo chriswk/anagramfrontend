@@ -126,7 +126,7 @@ anagramDecoder =
 
 toAnagramUrl : String -> String
 toAnagramUrl word =
-    U.crossOrigin "http://anagrambackend.chriswk.com"
+    U.crossOrigin "https://anagrambackend.herokuapp.com"
         [ "anagram" ]
         [ U.string "word" word
         ]
