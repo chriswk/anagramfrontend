@@ -10,6 +10,7 @@
         "dev": "webpack-serve --port 3000",
         "build": "webpack",
         "prod": "webpack -p",
+	"heroku-postbuild": "webpack -p",
         "//postinstall": "elm-package install -y && elm-test init"
     },
     "repository": {
