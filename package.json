@@ -13,6 +13,9 @@
         "heroku-postbuild": "webpack -p",
         "//postinstall": "elm-package install -y && elm-test init"
     },
+    "engines": {
+        "node": "10.10.0"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/chriswk/anagramfrontend"
