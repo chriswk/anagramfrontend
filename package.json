@@ -10,7 +10,7 @@
         "dev": "webpack-serve --port 3000",
         "build": "webpack",
         "prod": "webpack -p",
-	"heroku-postbuild": "webpack -p",
+        "heroku-postbuild": "webpack -p",
         "//postinstall": "elm-package install -y && elm-test init"
     },
     "repository": {
@@ -44,6 +44,7 @@
         "webpack-serve": "^2.0.2"
     },
     "dependencies": {
-        "purecss": "^1.0.0"
+        "purecss": "^1.0.0",
+        "serve": "^10.0.1"
     }
 }
