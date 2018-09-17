@@ -49,7 +49,7 @@ view model =
     in
     div []
         [ div []
-            [ div [] [ input [ A.placeholder "Word to find anagrams for", A.value model.word, onInput ChangeWord ] [] ]
+            [ div [] [ input [ A.placeholder "Find anagrams for?", A.value model.word, onInput ChangeWord ] [] ]
             , div [] [ input [ A.type_ "number", A.value wordCountStr, A.min "2", A.max "6", onInput ChangeCount ] [] ]
             , div [] [ button [ onClick PerformSearch ] [ text "Find anagrams" ] ]
             ]
@@ -126,7 +126,7 @@ anagramDecoder =
 
 toAnagramUrl : String -> String
 toAnagramUrl word =
-    U.crossOrigin "http://localhost:8080"
+    U.crossOrigin "http://anagrambackend.chriswk.com"
         [ "anagram" ]
         [ U.string "word" word
         ]
