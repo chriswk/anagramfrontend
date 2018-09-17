@@ -6,13 +6,14 @@ import Html exposing (Attribute, Html, button, div, input, label, text)
 import Html.Attributes as A
 import Html.Events exposing (onClick, onInput)
 import Http
-import Url
+import Json.Decode as Decode
+import Url.Builder as U
 
 
 type alias Model =
     { word : String
     , minCount : Int
-    , suggestions : List String
+    , anagrams : List String
     }
 
 
@@ -21,14 +22,14 @@ type Msg
     | ChangeWord String
     | PerformSearch
     | ChangeCount String
-    | NewAnagrams (Result Http.Error String)
+    | NewAnagrams (Result Http.Error (List String))
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { word = ""
       , minCount = 3
-      , suggestions = []
+      , anagrams = []
       }
     , Cmd.none
     )
@@ -47,10 +48,33 @@ view model =
                 |> String.fromInt
     in
     div []
-        [ div [] [ input [ A.placeholder "Word to find anagrams for", A.value model.word, onInput ChangeWord ] [] ]
-        , div [] [ input [ A.type_ "number", A.value wordCountStr, A.min "2", A.max "6", onInput ChangeCount ] [] ]
-        , div [] [ button [ onClick PerformSearch ] [ text "Find anagrams" ] ]
+        [ div []
+            [ div [] [ input [ A.placeholder "Word to find anagrams for", A.value model.word, onInput ChangeWord ] [] ]
+            , div [] [ input [ A.type_ "number", A.value wordCountStr, A.min "2", A.max "6", onInput ChangeCount ] [] ]
+            , div [] [ button [ onClick PerformSearch ] [ text "Find anagrams" ] ]
+            ]
+        , div [] (anagramList model.anagrams)
         ]
+
+
+anagramNode : String -> Html Msg
+anagramNode anagram =
+    div [] [ text anagram ]
+
+
+anagramList : List String -> List (Html Msg)
+anagramList anagrams =
+    if List.isEmpty anagrams then
+        [ div [] [ text "No anagrams found yet" ] ]
+
+    else
+        let
+            sortByLengthAsc =
+                List.sortBy String.length anagrams
+        in
+        sortByLengthAsc
+            |> List.reverse
+            |> List.map anagramNode
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -77,19 +101,34 @@ update msg model =
         PerformSearch ->
             ( model, getAnagrams model.word )
 
+        NewAnagrams anagramsList ->
+            let
+                anagrams =
+                    case anagramsList of
+                        Ok words ->
+                            words
+
+                        Err _ ->
+                            []
+            in
+            ( { model | anagrams = anagrams }, Cmd.none )
+
 
 getAnagrams : String -> Cmd Msg
 getAnagrams word =
     Http.send NewAnagrams (Http.get (toAnagramUrl word) anagramDecoder)
 
 
-anagramDecoder : 
+anagramDecoder : Decode.Decoder (List String)
+anagramDecoder =
+    Decode.field "anagrams" (Decode.list Decode.string)
+
 
 toAnagramUrl : String -> String
 toAnagramUrl word =
-    Url.crossorigin "http://anagrambackend.chriswk.com"
+    U.crossOrigin "http://localhost:8080"
         [ "anagram" ]
-        [ Url.string "word" word
+        [ U.string "word" word
         ]
 
 
