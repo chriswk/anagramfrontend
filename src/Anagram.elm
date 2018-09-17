@@ -5,6 +5,7 @@ import Debug
 import Html exposing (Attribute, Html, button, div, input, label, text)
 import Html.Attributes as A
 import Html.Events exposing (onClick, onInput)
+import Http
 
 
 type alias Model =
@@ -19,22 +20,22 @@ type Msg
     | ChangeWord String
     | PerformSearch
     | ChangeCount String
+    | NewAnagrams (Result Http.Error String)
 
 
-init : Model
-init =
-    { word = ""
-    , minCount = 3
-    , suggestions = []
-    }
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( { word = ""
+      , minCount = 3
+      , suggestions = []
+      }
+    , Cmd.none
+    )
 
 
 view : Model -> Html Msg
 view model =
     let
-        m =
-            Debug.log "Model" model
-
         wordCountStr =
             model.minCount
                 |> String.fromInt
@@ -51,14 +52,14 @@ view model =
         ]
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
-            model
+            ( model, Cmd.none )
 
         ChangeWord newWord ->
-            { model | word = newWord }
+            ( { model | word = newWord }, Cmd.none )
 
         ChangeCount toCount ->
             let
@@ -70,15 +71,29 @@ update msg model =
                         Just new ->
                             new
             in
-            { model | minCount = newCount }
+            ( { model | minCount = newCount }, Cmd.none )
 
         PerformSearch ->
-            model
+            ( model, getAnagrams model.word )
+
+
+getAnagrams : String -> Cmd Msg
+getAnagrams word =
+    Http.send NewAnagrams (Http.get (toAnagramUrl word) anagramDecoder)
+
+
+toAnagramUrl : String -> String
+toAnagramUrl word =
+    Url.crossorigin "http://anagrambackend.chriswk.com"
+        [ "anagram" ]
+        [ Url.string "word" word
+        ]
 
 
 main =
-    Browser.sandbox
+    Browser.element
         { init = init
         , view = view
         , update = update
+        , subscriptions = \_ -> Sub.none
         }
