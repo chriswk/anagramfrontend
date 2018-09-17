@@ -12,7 +12,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 // to extract the css as a separate file
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-var MODE = process.env.npm_lifecycle_event === "prod" ? "production" : "development";
+var HEROKU_MODE = process.env.NODE_ENV === "production" ? "production" : "development";
+var MODE = (process.env.npm_lifecycle_event === "prod") || HEROKU_MODE === "production" ? "production" : "development";
 var filename = MODE == "production" ? "[name]-[hash].js" : "index.js";
 
 var common = {
