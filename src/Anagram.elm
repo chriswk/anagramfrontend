@@ -61,7 +61,7 @@ sidebar model =
             [ h2 [ A.class "brand-tagline" ] [ text "Find your anagrams" ]
             , fieldset []
                 [ legend [] [ text "Find anagrams for?" ]
-                , input [ A.placeholder "Baseword", A.value model.word, onInput ChangeWord ] []
+                , input [ A.placeholder "Baseword", A.maxlength 20, A.value model.word, onInput ChangeWord ] []
                 , input [ A.type_ "number", A.value wordCountStr, A.min "2", A.max wordLength, onInput ChangeCount ] []
                 , button [ A.class "pure-button pure-button-primary", onClick PerformSearch ] [ text "Find anagrams" ]
                 ]
