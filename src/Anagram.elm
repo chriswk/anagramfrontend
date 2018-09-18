@@ -119,6 +119,9 @@ wordSection words =
 
                 Nothing ->
                     0
+
+        wordCount =
+            List.length words
     in
     section [ A.class "post" ]
         [ table [ A.class "pure-table" ]
@@ -126,6 +129,8 @@ wordSection words =
                 [ tr []
                     [ th [] [ text "Number of letters" ]
                     , th [] [ text (String.fromInt letterCount) ]
+                    , th [] [ text "Total words" ]
+                    , th [] [ text (String.fromInt wordCount) ]
                     ]
                 ]
             , tbody [] (wordRows words)
