@@ -95,7 +95,7 @@ anagramGroups model =
                 |> List.reverse
                 |> List.map (getData grouped)
     in
-    Debug.log "words" wordLengths
+    wordLengths
         |> List.map wordSection
 
 
