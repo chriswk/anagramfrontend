@@ -153,7 +153,7 @@ update msg model =
             ( model, Cmd.none )
 
         ChangeWord newWord ->
-            ( { model | word = newWord }, Cmd.none )
+            ( { model | word = newWord, anagrams = [] }, Cmd.none )
 
         ChangeCount toCount ->
             let
