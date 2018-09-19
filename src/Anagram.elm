@@ -123,19 +123,24 @@ wordSection words =
         wordCount =
             List.length words
     in
-    section [ A.class "post" ]
-        [ table [ A.class "pure-table" ]
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Number of letters" ]
-                    , th [] [ text (String.fromInt letterCount) ]
-                    , th [] [ text "Total words" ]
-                    , th [] [ text (String.fromInt wordCount) ]
+    case wordCount of
+        0 ->
+            div [] []
+
+        _ ->
+            section [ A.class "post" ]
+                [ table [ A.class "pure-table" ]
+                    [ thead []
+                        [ tr []
+                            [ th [] [ text "Number of letters" ]
+                            , th [] [ text (String.fromInt letterCount) ]
+                            , th [] [ text "Total words" ]
+                            , th [] [ text (String.fromInt wordCount) ]
+                            ]
+                        ]
+                    , tbody [] (wordRows words)
                     ]
                 ]
-            , tbody [] (wordRows words)
-            ]
-        ]
 
 
 wordRows : List String -> List (Html Msg)
