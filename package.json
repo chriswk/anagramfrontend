@@ -49,6 +49,6 @@
     },
     "dependencies": {
         "purecss": "^1.0.0",
-        "serve": "^10.0.1"
+        "serve": "^10.1.2"
     }
 }
