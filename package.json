@@ -34,7 +34,7 @@
         "elm-verify-examples": "^3.0.0",
         "elm-webpack-loader": "^5.0.0",
         "file-loader": "^2.0.0",
-        "html-webpack-plugin": "^3.2.0",
+        "html-webpack-plugin": "^5.5.0",
         "koa-connect-history-api-fallback": "^0.3.1",
         "mini-css-extract-plugin": "^0.4.0",
         "node-sass": "^4.9.0",
